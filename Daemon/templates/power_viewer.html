@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Viewer</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <a href = "/">Home</a>
+                <a href = "/daemon/powers">Power List</a>
+            </div>
+            <div class="col-8">
+                <h1>{ power.name }</h1>
+                <p> { power.description }</p>
+            </div>
+            <div class="4">
+                <table>
+                    <caption>Registered With This Power</caption>
+                    <th> Alias </th>
+                    <th> Alignment </th>
+                    {% if user not in power.users %}
+                        <td> NONE </td>
+                        <td> NONE </td>
+                    {% endif %}
+                    {% for user in power.users %}
+                        <td> { user.alias } </td> 
+                        <td> { user.aignment }</td>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

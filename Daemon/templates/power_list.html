@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Power List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container px-2">
+        <div class="row mb-5">
+            <a href = "/">Home</a>
+        </div>
+
+        <div class="row">
+        <div class="col ml-3">
+            <table class="table table-striped">
+                <h2>Powers Currently in Database</h2>
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                {% for power in all_powers %}
+                    <tr>
+                        <td><a href="/daemon/powers/{power.id}">{{ power.name }}</a></td> 
+                        <td><a href="#">EDIT</aa> | <a href="#">DELETE</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>      
+        <div class="col mr-3">
+            <h2>Add a New Power:</h2>
+            <form action="/daemon/register_power" method="POST">
+                {% csrf_token %}
+                
+                <div class="row form_group">
+                    {% if not messages %}
+                    <label for="name">Power Name:</label>
+                    {% else %}
+                    <label for="name" class="text-danger font-weight-bold">Power Name: </label>
+                    {% endif %}
+
+                    {% for message in messages %}
+                    {% if "name" in message.extra_tags %}
+                        <p class="text-danger text-italic ml-2">{{ message }}</p>
+                        {% endif %}
+                    {% endfor %}
+
+                    <input type="text" name="name" class="form-control" />
+                </div>
+
+                <div class="row form_group">
+                    {% if not messages %}
+                    <label for="description">Description:</label>
+                    {% else %}
+                    <label for="description" class="text-danger font-weight-bold">Description: </label>
+                    {% endif %}
+                    {% for message in messages %}
+                    {% if "description" in message.extra_tags %}
+                        <p class="text-danger text-italic ml-2">{{ message }}</p>
+                    {% endif %}
+                    
+                    {% endfor %}
+                    <textarea name="description" rows="10" class="form-control"></textarea>
+                </div>
+                <div class="row form_group mt-2">
+                    <input type="submit" class="btn btn-primary col-12" />
+                </div>
+            </form>
+
+        </div>
+        </div>
+    </div>
+</body>
+</html>
