@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Team List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container px-2">
+        <div class="row mb-5">
+            <a href = "/">Home</a>
+        </div>
+
+        <div class="row">
+        <div class="col ml-3">
+            <table class="table table-striped">
+                <h2>Teams Currently in Database</h2>
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Active</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                {% for team in all_teams %}
+                    <tr>
+                        <td><a href="/daemon/teams/{team.id}">{{ team.name }}</a></td>
+                        <td>{% if team.active %} &#10004 {% else %} &#10060 {% endif %}</td> 
+                        <td><a href="#">EDIT</aa> | <a href="#">DELETE</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>      
+        <div class="col mr-3">
+            <h2>Add a New Team:</h2>
+            <form action="/daemon/register_team" method="POST">
+                {% csrf_token %}
+                
+                <div class="row form_group">
+                    {% if not messages %}
+                    <label for="name">Team Name:</label>
+                    {% else %}
+                    <label for="name" class="text-danger font-weight-bold">Team Name: </label>
+                    {% endif %}
+
+                    {% for message in messages %}
+                    {% if "name" in message.extra_tags %}
+                        <p class="text-danger text-italic ml-2">{{ message }}</p>
+                        {% endif %}
+                    {% endfor %}
+
+                    <input type="text" name="name" class="form-control" />
+                </div>
+
+                <div class="row form_group">
+                    {% if not messages %}
+                    <label for="headquarters">Team Headquarters:</label>
+                    {% else %}
+                    <label for="headquarters" class="text-danger font-weight-bold">Team Headquarters: </label>
+                    {% endif %}
+
+                    {% for message in messages %}
+                    {% if "headquarters" in message.extra_tags %}
+                        <p class="text-danger text-italic ml-2">{{ message }}</p>
+                        {% endif %}
+                    {% endfor %}
+
+                    <input type="text" name="headquarters" class="form-control" />
+                </div>
+
+                <div class="row form_group">
+                    {% if not messages %}
+                    <label for="inception">Team Inception:</label>
+                    {% else %}
+                    <label for="inception" class="text-danger font-weight-bold">Team Inception: </label>
+                    {% endif %}
+
+                    {% for message in messages %}
+                    {% if "inception" in message.extra_tags %}
+                        <p class="text-danger text-italic ml-2">{{ message }}</p>
+                        {% endif %}
+                    {% endfor %}
+
+                    <input type="date" name="inception" class="form-control" />
+                </div>
+
+                <div class="row form_group">
+                    {% if not messages %}
+                    <label for="active">Active Currently:</label>
+                    {% else %}
+                    <label for="active" class="text-danger font-weight-bold">Active Currently: </label>
+                    {% endif %}
+
+                    {% for message in messages %}
+                    {% if "active" in message.extra_tags %}
+                        <p class="text-danger text-italic ml-2">{{ message }}</p>
+                        {% endif %}
+                    {% endfor %}
+                    <label class="btn btn-light">
+                        <input type="radio" name="active" value="True" class="form-control"> YES
+                    </label>
+                    <label class="btn btn-light">
+                        <input type="radio" name="active" value="False" class="form-control active" checked=""> NO
+                    </label>
+                </div>
+
+                <div class="row form_group">
+                    {% if not messages %}
+                    <label for="description">Description:</label>
+                    {% else %}
+                    <label for="description" class="text-danger font-weight-bold">Description: </label>
+                    {% endif %}
+                    {% for message in messages %}
+                    {% if "description" in message.extra_tags %}
+                        <p class="text-danger text-italic ml-2">{{ message }}</p>
+                    {% endif %}
+                    
+                    {% endfor %}
+                    <textarea name="description" rows="10" class="form-control"></textarea>
+                </div>
+
+                <div class="row form_group mt-2">
+                    <input type="submit" class="btn btn-primary col-12" />
+                </div>
+            </form>
+
+        </div>
+        </div>
+    </div>
+</body>
+</html>

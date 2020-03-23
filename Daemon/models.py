@@ -38,7 +38,7 @@ class TeamManager(models.Manager):
     def Team_Val(self, POSTdata):
         errors = {}
         warnings = {}
-        today = str(datetime.date.today())
+        today = time.strptime(str(datetime.date.today()), "%Y-%m-%d")
         if len(POSTdata['name']) == 0:
             errors['name'] = "Please enter a team name!"
         related_active = Team.objects.filter(name = POSTdata['name'], active = True)
@@ -47,8 +47,14 @@ class TeamManager(models.Manager):
         related_inactive = Team.objects.filter(name = POSTdata['name'], active = False)
         if len(related_inactive) > 0:
             warnings['name'] = "Be aware: Your team's name reuses a currently inactive team name!"
-        if time.strptime(POSTdata['inception'], "%Y-%m-%D") > time.strptime(today, "%Y-%m-%D"):
+        if len(POSTdata['headquarters']) == 0:
+            errors['headquarters'] = "Please register the headquarters for this team!"
+        if len(POSTdata['inception']) == 0:
+            errors['inception'] = "You must add a date for when this team formed!"
+        elif time.strptime(POSTdata['inception'], "%Y-%m-%d") > today:
             warnings['inception'] = "Be aware: Your inception date is in the future!"
+        if len(POSTdata["description"]) < 10:
+            errors["description"] = "Please describe the team with some detail!"
         messages = [errors, warnings]
         return messages        
 
@@ -73,6 +79,6 @@ class Team(models.Model):
     inception = models.DateField()
     active = models.BooleanField(default = True)
     description = models.TextField(max_length = 250)
-    leader = models.ForeignKey("User", related_name="team_lead", on_delete=models.CASCADE)
+    leader = models.ForeignKey("User", related_name="team_lead", on_delete=models.CASCADE, null=True)
     members = models.ManyToManyField("User", related_name="team")
     objects = TeamManager()

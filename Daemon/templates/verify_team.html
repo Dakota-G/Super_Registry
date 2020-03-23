@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <ul>
+                    <h4 class="text-danger"> Warning </h4>
+                    <p class="text-danger"> Verify before submitting. Or else press back to redo form</p>
+                {% for warning in messages %}
+                    <li class="text-danger"> {{ warning }} </li>
+                {% endfor %}
+                </ul>
+            </div>
+            <div class="col mr-3">
+                <h2>Information to be submitted:</h2>
+                <form action="/daemon/register_team_f" method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="row form_group">
+
+                        <label for="name">Team Name: {{form.name}}</label>
+
+                        <input type="hidden" name="name" class="form-control" value="{{form.name}}"/>
+                    </div>
+    
+                    <div class="row form_group">
+                        <label for="headquarters">Team Headquarters: {{form.headquarters}}</label>
+    
+                        <input type="hidden" name="headquarters" class="form-control" value="{{form.headquarters}}"/>
+                    </div>
+    
+                    <div class="row form_group">
+                        <label for="inception">Team Inception: {{form.inception}}</label>
+    
+                        <input type="hidden" name="inception" class="form-control" value="{{form.inception}}"/>
+                    </div>
+    
+                    <div class="row form_group">
+                        <label for="active">Active Currently: {{form.active}}</label>
+
+                        <input type="hidden" name="active" value="{{form.active}}" class="form-control">
+                    </div>
+    
+                    <div class="row form_group">
+
+                        <label for="description">Description: {{form.description}}</label>
+
+                        <input type="hidden" name="description" rows="10" class="form-control value={{form.description}}">
+                    </div>
+    
+                    <div class="row form_group mt-2">
+                        <button type="submit" class="btn btn-primary col-12"> Submit As-Is </button>
+                    </div>
+                </form>
+                    <a href="/daemon/teams"><button type="button" class=" col-12 btn btn-danger">Back</button></a>
+    
+            </div>
+        </div>
+    </div>  
+</body>
+</html>
